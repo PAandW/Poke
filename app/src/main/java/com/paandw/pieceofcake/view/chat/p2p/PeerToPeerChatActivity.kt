@@ -1,13 +1,13 @@
-package com.paandw.pieceofcake.view.ingredients.list
+package com.paandw.pieceofcake.view.chat.p2p
 
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import com.paandw.pieceofcake.R
 
-class IngredientListActivity : AppCompatActivity() {
+class PeerToPeerChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ingredient_list)
+        setContentView(R.layout.activity_p2p_chat)
     }
 }

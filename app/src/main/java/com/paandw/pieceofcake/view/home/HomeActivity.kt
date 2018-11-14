@@ -1,13 +1,13 @@
-package com.paandw.pieceofcake.view.recipe
+package com.paandw.pieceofcake.view.home
 
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
 import com.paandw.pieceofcake.R
 
-class RecipeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recipe)
+        setContentView(R.layout.activity_home)
     }
 }

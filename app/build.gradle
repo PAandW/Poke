@@ -23,7 +23,7 @@ android {
 }
 
 ext {
-    androidSupport='28.0.0'
+    androidSupport = '28.0.0'
 }
 
 dependencies {
