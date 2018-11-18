@@ -18,8 +18,6 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
 
     private lateinit var presenter: P2PLobbyPresenter
 
-    private lateinit var channel: WifiP2pManager.Channel
-    private lateinit var manager: WifiP2pManager
     private val intentFilter = IntentFilter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +29,8 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
 
-
-        manager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
-        channel = manager.initialize(this, mainLooper, null)
+        val manager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
+        val channel = manager.initialize(this, mainLooper, null)
 
         presenter.start(manager, channel, this)
 

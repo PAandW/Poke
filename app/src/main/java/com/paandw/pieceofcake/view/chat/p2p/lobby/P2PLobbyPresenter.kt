@@ -50,4 +50,16 @@ class P2PLobbyPresenter : WifiP2pManager.ChannelListener, WifiP2pManager.PeerLis
     fun updateThisDevice(device: WifiP2pDevice) {
         this.device = device
     }
+
+    fun initiatePeerSearch() {
+        manager.discoverPeers(channel, object : WifiP2pManager.ActionListener {
+            override fun onSuccess() {
+                //Nothing really needs to go here, just means it didn't fail
+            }
+
+            override fun onFailure(reason: Int) {
+                //TODO handle failed peer search initiation
+            }
+        })
+    }
 }
