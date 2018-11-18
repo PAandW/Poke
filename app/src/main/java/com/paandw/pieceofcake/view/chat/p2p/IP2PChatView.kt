@@ -1,4 +1,4 @@
 package com.paandw.pieceofcake.view.chat.p2p
 
-interface IPeerToPeerChatView {
+interface IP2PChatView {
 }
