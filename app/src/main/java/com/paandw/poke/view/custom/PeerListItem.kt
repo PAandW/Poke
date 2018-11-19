@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.paandw.poke.R
+import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyPresenter
 import kotlinx.android.synthetic.main.view_peer_list_item.view.*
 
 /**
@@ -18,8 +19,9 @@ class PeerListItem(context: Context) : FrameLayout(context) {
         View.inflate(context, R.layout.view_peer_list_item, this)
     }
 
-    fun setup(device: WifiP2pDevice) {
+    fun setup(device: WifiP2pDevice, presenter: P2PLobbyPresenter) {
         tv_name.text = device.deviceName
+        setOnClickListener { presenter }
     }
 
 }
