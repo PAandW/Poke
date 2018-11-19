@@ -39,7 +39,7 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
     }
 
     fun userSelected(device: WifiP2pDevice) {
-
+        view.beginConversation(device)
     }
 
     override fun onChannelDisconnected() {
@@ -50,7 +50,6 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
         view.hideProgress()
         peerList.clear()
         peerList.addAll(peers.deviceList)
-
     }
 
     override fun onConnectionInfoAvailable(info: WifiP2pInfo?) {

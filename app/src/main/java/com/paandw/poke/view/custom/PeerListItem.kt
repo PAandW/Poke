@@ -21,7 +21,7 @@ class PeerListItem(context: Context) : FrameLayout(context) {
 
     fun setup(device: WifiP2pDevice, presenter: P2PLobbyPresenter) {
         tv_name.text = device.deviceName
-        setOnClickListener { presenter }
+        setOnClickListener { presenter.userSelected(device) }
     }
 
 }
