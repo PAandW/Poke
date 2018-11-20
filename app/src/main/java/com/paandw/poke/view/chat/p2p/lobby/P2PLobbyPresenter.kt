@@ -50,6 +50,7 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
         view.hideProgress()
         peerList.clear()
         peerList.addAll(peers.deviceList)
+        view.showPeerSelection(peerList)
     }
 
     override fun onConnectionInfoAvailable(info: WifiP2pInfo?) {
@@ -69,6 +70,18 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
 
             override fun onFailure(reason: Int) {
                 //TODO handle failed peer search initiation
+            }
+        })
+    }
+
+    fun cancelUserSearch() {
+        manager?.stopPeerDiscovery(channel, object: WifiP2pManager.ActionListener {
+            override fun onSuccess() {
+                //Do nothing really...
+            }
+
+            override fun onFailure(p0: Int) {
+                //Also don't really need to do anything...
             }
         })
     }

@@ -1,10 +1,15 @@
 package com.paandw.poke.view.chat.p2p
 
+import android.Manifest
 import android.content.Context
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.net.wifi.p2p.WifiP2pDevice
 import android.net.wifi.p2p.WifiP2pManager
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.paandw.poke.R
@@ -15,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_p2p_lobby.*
 
 class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
 
-    private lateinit var presenter: P2PLobbyPresenter
+    private var presenter: P2PLobbyPresenter? = null
 
     private val intentFilter = IntentFilter()
     private var peerDialog: P2PDialog? = null
@@ -25,19 +30,31 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_p2p_lobby)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION), 0)
+        } else {
+            initialize()
+        }
+
+    }
+
+    private fun initialize() {
+
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION)
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
 
-        val manager = getSystemService(Context.WIFI_P2P_SERVICE)?.let { it as WifiP2pManager}
+        val manager = getSystemService(Context.WIFI_P2P_SERVICE)?.let { it as WifiP2pManager }
         val channel = manager?.initialize(this, mainLooper, null)
         presenter = P2PLobbyPresenter(this)
 
         if (manager != null) {
-            presenter.start(manager, channel!!)
+            presenter!!.start(manager, channel!!)
             peerDialog = P2PDialog()
-            peerDialog?.setup(presenter)
+            peerDialog?.setup(presenter!!)
 
             progressDialog = MaterialDialog.Builder(this)
                     .progress(true, 0)
@@ -45,29 +62,39 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
                     .build()
 
             btn_scan_for_users.setOnClickListener {
-                presenter.scanForUsers()
+                presenter?.scanForUsers()
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == 0) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initialize()
+                presenter?.onResume()
             }
         }
     }
 
     override fun showPeerSelection(peers: MutableList<WifiP2pDevice>) {
+        if (!peerDialog!!.isAdded) {
+            peerDialog?.showNow(supportFragmentManager, "dialog")
+        }
         peerDialog?.setPeerList(peers)
-        peerDialog?.show(supportFragmentManager, "peer_selection_dialog")
     }
 
     override fun beginConversation(device: WifiP2pDevice) {
         peerDialog?.dismiss()
-
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.onResume()
+        presenter?.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.onPause()
+        presenter?.onPause()
     }
 
     override fun registerP2PReceiver(receiver: P2PBroadcastReceiver) {
@@ -83,7 +110,7 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
     }
 
     override fun hideProgress() {
-        progressDialog?.hide()
+        progressDialog?.dismiss()
     }
 
     override fun showWifiP2PWarning() {

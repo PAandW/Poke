@@ -24,7 +24,7 @@ internal class P2PLobbyAdapter (private val presenter: P2PLobbyPresenter) : Recy
     override fun getItemCount(): Int = searchItems.size
 
     override fun onBindViewHolder(holder: P2PLobbyAdapter.ViewHolder, position: Int) {
-        holder.searchItem.setup(searchItems[position])
+        holder.searchItem.setup(searchItems[position], presenter)
     }
 
     internal class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
