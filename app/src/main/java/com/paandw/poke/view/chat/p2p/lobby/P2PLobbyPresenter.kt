@@ -1,10 +1,8 @@
 package com.paandw.poke.view.chat.p2p.lobby
 
-import android.net.wifi.p2p.WifiP2pDevice
-import android.net.wifi.p2p.WifiP2pDeviceList
-import android.net.wifi.p2p.WifiP2pInfo
-import android.net.wifi.p2p.WifiP2pManager
+import android.net.wifi.p2p.*
 import com.paandw.poke.data.p2p.P2PBroadcastReceiver
+import com.paandw.poke.data.p2p.P2PMessage
 import com.paandw.poke.view.chat.p2p.IP2PLobbyView
 
 class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListener, WifiP2pManager.PeerListListener, WifiP2pManager.ConnectionInfoListener {
@@ -13,6 +11,7 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
     private var manager: WifiP2pManager? = null
     private lateinit var channel: WifiP2pManager.Channel
     private lateinit var broadcastReceiver: P2PBroadcastReceiver
+    private var messages = ArrayList<P2PMessage>()
 
     private var peerList = ArrayList<WifiP2pDevice>()
 
@@ -39,7 +38,33 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
     }
 
     fun userSelected(device: WifiP2pDevice) {
-        view.beginConversation(device)
+        view.userSelected(device)
+    }
+
+    fun startConversation(device: WifiP2pDevice) {
+        val config = WifiP2pConfig()
+        config.deviceAddress = device.deviceAddress
+
+        channel.also {
+            manager?.connect(channel, config, object: WifiP2pManager.ActionListener {
+                override fun onSuccess() {
+                    cancelUserSearch()
+                }
+
+                override fun onFailure(p0: Int) {
+                    //TODO Should probably handle this (fired when it fails to connect to other user)
+                }
+            })
+        }
+    }
+
+    fun messageReceived(message: String) {
+        val incomingMessage = P2PMessage()
+        incomingMessage.message = message
+        incomingMessage.fromOtherUser = true
+
+        messages.add(incomingMessage)
+
     }
 
     override fun onChannelDisconnected() {
@@ -54,7 +79,13 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
     }
 
     override fun onConnectionInfoAvailable(info: WifiP2pInfo?) {
-        //TODO Handle this
+        if (info?.groupFormed!! && info.isGroupOwner) {
+            cancelUserSearch()
+            view.initiateServer()
+        } else if (info.groupFormed) {
+            cancelUserSearch()
+            view.initiateClient(info)
+        }
     }
 
     fun updateThisDevice(device: WifiP2pDevice) {
