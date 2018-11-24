@@ -56,6 +56,7 @@ class ConnectToP2PHost(private val presenter: P2PChatPresenter, private val info
 
     override fun onPostExecute(result: Void?) {
         BeginListeningToHost(presenter, reader!!).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        presenter.sendInitialSlug()
     }
 }
 
@@ -77,7 +78,7 @@ class BeginListeningToHost(private val presenter: P2PChatPresenter, private val 
     }
 }
 
-class SendMessage(private val presenter: P2PChatPresenter, private var client: P2PClient?, private var writerToHost: PrintWriter?) : AsyncTask<P2PMessage, Void, Void>() {
+class SendMessage(private var client: P2PClient?, private var writerToHost: PrintWriter?) : AsyncTask<P2PMessage, Void, Void>() {
 
     override fun doInBackground(vararg message: P2PMessage): Void? {
 

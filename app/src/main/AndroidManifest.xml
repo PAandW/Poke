@@ -26,8 +26,10 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="com.paandw.poke.MainActivity" />
         <activity android:name="com.paandw.poke.view.home.HomeActivity"/>
-        <activity android:name="com.paandw.poke.view.chat.p2p.P2PChatActivity"/>
-        <activity android:name="com.paandw.poke.view.chat.p2p.P2PLobbyActivity">
+        <activity android:name="com.paandw.poke.view.chat.p2p.P2PChatActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.paandw.poke.view.chat.p2p.P2PLobbyActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

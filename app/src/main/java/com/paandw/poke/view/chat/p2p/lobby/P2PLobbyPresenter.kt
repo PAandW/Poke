@@ -84,13 +84,25 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
     }
 
     fun cancelUserSearch() {
-        manager?.stopPeerDiscovery(channel, object: WifiP2pManager.ActionListener {
+        manager?.stopPeerDiscovery(channel, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 //Do nothing really...
             }
 
             override fun onFailure(p0: Int) {
                 //Also don't really need to do anything...
+            }
+        })
+    }
+
+    fun destroyExistingGroup() {
+        manager?.removeGroup(channel, object : WifiP2pManager.ActionListener {
+            override fun onSuccess() {
+                //Don't do anything
+            }
+
+            override fun onFailure(p0: Int) {
+                //Also don't do anything
             }
         })
     }

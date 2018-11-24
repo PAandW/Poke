@@ -24,12 +24,17 @@ class P2PChatActivity : AppCompatActivity(), IP2PChatView {
 
         presenter.start(intent?.extras?.get("info") as WifiP2pInfo, this)
 
-        iv_send.setOnClickListener { presenter.sendMessage(et_message.text.toString()) }
+        iv_send.setOnClickListener {
+            val message = et_message.text.toString()
+            et_message.text.clear()
+            presenter.sendMessage(message)
+        }
     }
 
     override fun bindMessages(messages: MutableList<P2PMessage>) {
         runOnUiThread {
             adapter.setListItems(messages)
+            rv_messages.scrollToPosition(messages.count() - 1)
         }
     }
 }

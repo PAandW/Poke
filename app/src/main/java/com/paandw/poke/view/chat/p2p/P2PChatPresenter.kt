@@ -61,7 +61,12 @@ class P2PChatPresenter {
         messages.add(p2pMessage)
         view.bindMessages(messages)
 
-        SendMessage(this, client, writerToHost).execute(p2pMessage)
+        SendMessage(client, writerToHost).execute(p2pMessage)
+    }
+
+    fun sendInitialSlug() {
+        val slug = P2PMessage("initial_slug", "", true)
+        SendMessage(client, writerToHost).execute(slug)
     }
 
 }

@@ -43,6 +43,12 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 101) {
+            presenter?.destroyExistingGroup()
+        }
+    }
+
     private fun initialize() {
 
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
