@@ -28,6 +28,8 @@ class P2PChatActivity : AppCompatActivity(), IP2PChatView {
     }
 
     override fun bindMessages(messages: MutableList<P2PMessage>) {
-        adapter.setListItems(messages)
+        runOnUiThread {
+            adapter.setListItems(messages)
+        }
     }
 }

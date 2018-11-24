@@ -46,7 +46,9 @@ class P2PChatPresenter {
 
     fun messageReceived(jsonString: String) {
         val message = P2PMessage(jsonString)
+        message.isMine = false
         messages.add(message)
+
         view.bindMessages(messages)
     }
 
@@ -54,9 +56,12 @@ class P2PChatPresenter {
         val dateFormat = SimpleDateFormat("MM/dd/yy hh:mm a", Locale.US)
         val timeString = dateFormat.format(Date())
 
-        val message = P2PMessage(message, timeString, true)
+        val p2pMessage = P2PMessage(message, timeString, true)
 
-        SendMessage(this, client, writerToHost).execute(message)
+        messages.add(p2pMessage)
+        view.bindMessages(messages)
+
+        SendMessage(this, client, writerToHost).execute(p2pMessage)
     }
 
 }

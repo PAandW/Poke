@@ -10,7 +10,7 @@ class P2PChatListener (private val reader: BufferedReader, private val presenter
     override fun run() {
         while (isListening) {
             try {
-                var data = reader.readLine()
+                val data = reader.readLine()
                 if (data != null) {
                     presenter.messageReceived(data)
                 }

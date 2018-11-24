@@ -19,7 +19,15 @@ class ConversationItem(context: Context) : FrameLayout(context) {
     }
 
     fun setup(p2pMessage: P2PMessage) {
-        tv_message.text = p2pMessage.message
+        if (p2pMessage.isMine) {
+            container_message_received.visibility = View.GONE
+            container_message_sent.visibility = View.VISIBLE
+            tv_message_sent.text = p2pMessage.message
+        } else {
+            container_message_sent.visibility = View.GONE
+            container_message_received.visibility = View.VISIBLE
+            tv_message_received.text = p2pMessage.message
+        }
     }
 
 }
