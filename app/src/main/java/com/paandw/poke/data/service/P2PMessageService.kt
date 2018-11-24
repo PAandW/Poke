@@ -1,52 +1,93 @@
 package com.paandw.poke.data.service
 
-import android.content.Context
 import android.net.wifi.p2p.WifiP2pInfo
 import android.os.AsyncTask
-import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyPresenter
+import com.paandw.poke.data.p2p.P2PClient
+import com.paandw.poke.data.p2p.P2PMessage
+import com.paandw.poke.view.chat.p2p.P2PChatPresenter
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.PrintWriter
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
 
-class P2PServer(private val presenter: P2PLobbyPresenter) : AsyncTask<Void, Void, String?>(){
+class CreateP2PHost(private val presenter: P2PChatPresenter, private val serverSocket: ServerSocket) : AsyncTask<Void, Void, Void>(){
+    override fun doInBackground(vararg void: Void?): Void? {
+        try {
+            val socket = serverSocket.accept()
+            val reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+            val writer = PrintWriter(socket.getOutputStream(), true)
+            val clientName = reader.readLine()
+            val client = P2PClient(reader, writer, clientName, presenter)
 
-    override fun doInBackground(vararg p0: Void?): String? {
-
-        //Creates server socket
-        val socket = ServerSocket(8080)
-        return socket.use {
-            //Here it'll wait for a client connection
-            val client = socket.accept()
-
-            //At this point the other device has connected and is sending a message
-            val inputStream = client.getInputStream()
-            socket.close()
-            inputStream.toString()
+            presenter.setClient(client)
+            client.startListening()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
-    }
-
-    override fun onPostExecute(result: String?) {
-        result?.run {
-            presenter.messageReceived(this)
-        }
+        return null
     }
 }
 
-class P2PClient(private val context: Context, private val info: WifiP2pInfo) : AsyncTask<String?, Void, Void>() {
+class ConnectToP2PHost(private val presenter: P2PChatPresenter, private val info: WifiP2pInfo) : AsyncTask<Void, Void, Void>() {
 
-    override fun doInBackground(vararg message: String?): Void? {
+    private var reader: BufferedReader? = null
+
+    override fun doInBackground(vararg void: Void?): Void? {
+        val host = info.groupOwnerAddress
         val socket = Socket()
-        socket.bind(null)
-        socket.connect((InetSocketAddress(info.groupOwnerAddress, 8080)), 500)
-        val outputStream = socket.getOutputStream()
-        outputStream.write(message[0]!!.toByteArray())
-        outputStream.close()
 
-        socket.takeIf { it.isConnected } ?.apply {
-            close()
+        try {
+            socket.connect(InetSocketAddress(host.hostAddress, 8080), 500)
+            reader = BufferedReader(InputStreamReader(socket.getInputStream()))
+            val writer = PrintWriter(socket.getOutputStream(), true)
+
+            presenter.setWriterToHost(writer)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
+        return null
+    }
+
+    override fun onPostExecute(result: Void?) {
+        BeginListeningToHost(presenter, reader!!).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+    }
+}
+
+class BeginListeningToHost(private val presenter: P2PChatPresenter, private val reader: BufferedReader) : AsyncTask<Void, Void, Void>() {
+
+    override fun doInBackground(vararg void: Void?): Void? {
+        try {
+            while(true) {
+                val data = reader.readLine()
+                if (data != null) {
+                    presenter.messageReceived(data)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return null
+    }
+}
+
+class SendMessage(private val presenter: P2PChatPresenter, private var client: P2PClient?, private var writerToHost: PrintWriter?) : AsyncTask<P2PMessage, Void, Void>() {
+
+    override fun doInBackground(vararg message: P2PMessage): Void? {
+
+        if (client != null) {
+            val writer = client?.getWriter()
+            writer?.println(message[0].asJsonString)
+        } else {
+            writerToHost?.println(message[0].asJsonString)
+        }
+
         return null
     }
 }
