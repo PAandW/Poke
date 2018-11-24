@@ -1,9 +1,10 @@
-package com.paandw.poke.view.chat.p2p.lobby
+package com.paandw.poke.view.chat.p2p
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.paandw.poke.data.p2p.P2PMessage
+import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyPresenter
 import com.paandw.poke.view.custom.ConversationItem
 
 internal class P2PMessageAdapter (private val presenter: P2PLobbyPresenter) : RecyclerView.Adapter<P2PMessageAdapter.ViewHolder>() {
@@ -17,13 +18,13 @@ internal class P2PMessageAdapter (private val presenter: P2PLobbyPresenter) : Re
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): P2PMessageAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(ConversationItem(parent.context))
     }
 
     override fun getItemCount(): Int = messages.size
 
-    override fun onBindViewHolder(holder: P2PMessageAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.searchItem.setup(messages[position])
     }
 

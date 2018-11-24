@@ -38,33 +38,15 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
     }
 
     fun userSelected(device: WifiP2pDevice) {
-        view.userSelected(device)
-    }
-
-    fun startConversation(device: WifiP2pDevice) {
         val config = WifiP2pConfig()
         config.deviceAddress = device.deviceAddress
+        manager?.connect(channel, config, object : WifiP2pManager.ActionListener {
+            override fun onSuccess() {
+            }
 
-        channel.also {
-            manager?.connect(channel, config, object: WifiP2pManager.ActionListener {
-                override fun onSuccess() {
-                    cancelUserSearch()
-                }
-
-                override fun onFailure(p0: Int) {
-                    //TODO Should probably handle this (fired when it fails to connect to other user)
-                }
-            })
-        }
-    }
-
-    fun messageReceived(message: String) {
-        val incomingMessage = P2PMessage()
-        incomingMessage.message = message
-        incomingMessage.fromOtherUser = true
-
-        messages.add(incomingMessage)
-
+            override fun onFailure(p0: Int) {
+            }
+        })
     }
 
     override fun onChannelDisconnected() {
@@ -75,16 +57,12 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
         view.hideProgress()
         peerList.clear()
         peerList.addAll(peers.deviceList)
-        view.showPeerSelection(peerList)
+        view.bindPeerList(peerList)
     }
 
-    override fun onConnectionInfoAvailable(info: WifiP2pInfo?) {
-        if (info?.groupFormed!! && info.isGroupOwner) {
-            cancelUserSearch()
-            view.initiateServer()
-        } else if (info.groupFormed) {
-            cancelUserSearch()
-            view.initiateClient(info)
+    override fun onConnectionInfoAvailable(info: WifiP2pInfo) {
+        if (info.groupFormed) {
+            view.toChatActivity(info)
         }
     }
 
