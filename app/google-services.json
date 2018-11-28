@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "303757538535",
+    "firebase_url": "https://poke-pbbc-api.firebaseio.com",
+    "project_id": "poke-pbbc-api",
+    "storage_bucket": "poke-pbbc-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303757538535:android:a5605b0540c28cae",
+        "android_client_info": {
+          "package_name": "com.paandw.poke"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303757538535-k8o9ip1s5gdrf6jn15eja6u8jnmprfpc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv6DqmkYSDbhwZG7e02h4nfY9K6ePQO94"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
