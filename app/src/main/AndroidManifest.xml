@@ -4,17 +4,17 @@
     package="com.paandw.poke">
 
     <uses-permission
-        android:required="true"
-        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:required="true" />
     <uses-permission
-        android:required="true"
-        android:name="android.permission.ACCESS_WIFI_STATE"/>
+        android:name="android.permission.ACCESS_WIFI_STATE"
+        android:required="true" />
     <uses-permission
-        android:required="true"
-        android:name="android.permission.CHANGE_WIFI_STATE"/>
+        android:name="android.permission.CHANGE_WIFI_STATE"
+        android:required="true" />
     <uses-permission
-        android:required="true"
-        android:name="android.permission.INTERNET"/>
+        android:name="android.permission.INTERNET"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -24,11 +24,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.paandw.poke.MainActivity" />
-        <activity android:name="com.paandw.poke.view.home.HomeActivity"/>
-        <activity android:name="com.paandw.poke.view.chat.p2p.P2PChatActivity"
+        <activity android:name=".MainActivity" />
+        <activity android:name=".view.home.HomeActivity" />
+        <activity
+            android:name=".view.chat.p2p.P2PChatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.chat.p2p.P2PLobbyActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.paandw.poke.view.chat.p2p.P2PLobbyActivity"
+        <activity android:name=".view.login.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -21,6 +21,7 @@ import com.paandw.poke.data.p2p.P2PBroadcastReceiver
 import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyAdapter
 import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyPresenter
 import kotlinx.android.synthetic.main.activity_p2p_lobby.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
 
@@ -33,6 +34,7 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_p2p_lobby)
+        toolbar.title = getString(R.string.app_name)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission_group.LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
