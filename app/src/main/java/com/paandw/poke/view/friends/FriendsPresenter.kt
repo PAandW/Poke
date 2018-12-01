@@ -96,31 +96,54 @@ class FriendsPresenter {
             currentUser!!.pendingFriends!!.add(friendToAdd)
         }
 
-        if (friendToAddAsUser!!.pendingFriends == null) {
-            friendToAddAsUser!!.pendingFriends = ArrayList<Friend>()
-        }
-        if (friendToAddAsUser!!.pendingFriends!!.find { it.id == currentUser!!.id } == null) {
-            val currentUserAsFriend = Friend()
-            currentUserAsFriend.id = currentUser!!.id
-            currentUserAsFriend.username = currentUser!!.username
-            currentUserAsFriend.sent = false
-            friendToAddAsUser!!.pendingFriends!!.add(currentUserAsFriend)
-        }
+        database.child("users").child(friendToAdd!!.id).runTransaction(object: Transaction.Handler {
+
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                setupFriendListForDisplay()
+            }
+
+            override fun doTransaction(data: MutableData): Transaction.Result {
+                val friendAsUser = data.getValue(User::class.java)
+                val currentUserAsFriend = Friend()
+                currentUserAsFriend.id = currentUser!!.id
+                currentUserAsFriend.username = currentUser!!.username
+                currentUserAsFriend.sent = false
+                currentUserAsFriend.added = false
+                if (friendAsUser!!.pendingFriends == null) {
+                    friendAsUser.pendingFriends = ArrayList<Friend>()
+                }
+                friendAsUser.pendingFriends.add(currentUserAsFriend)
+                data.value = friendAsUser
+                return Transaction.success(data)
+            }
+        }, true)
 
         database.child("users").child(currentUser!!.id).child("pendingFriends").setValue(currentUser!!.pendingFriends)
-        database.child("users").child(friendToAddAsUser!!.id).child("pendingFriends").setValue(friendToAddAsUser!!.pendingFriends)
 
         setupFriendListForDisplay()
     }
 
     fun rejectFriendRequest(friend: Friend) {
-        val rejectedUser = userList.find { it.id == friend.id } ?: return
-        rejectedUser.pendingFriends.removeAll { it.id == currentUser!!.id }
+        database.child("users").child(friend.id).runTransaction(object: Transaction.Handler {
 
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                setupFriendListForDisplay()
+            }
+
+            override fun doTransaction(data: MutableData): Transaction.Result {
+                val friendAsUser = data.getValue(User::class.java)
+                friendAsUser!!.pendingFriends.removeAll { it.id == currentUser!!.id }
+                data.value = friendAsUser
+                return Transaction.success(data)
+            }
+        }, true)
+
+        if (currentUser!!.pendingFriends!!.find { it.id == friend.id } != null) {
+            currentUser!!.pendingFriends.removeAll { it.id == friend.id }
+        }
         currentUser!!.pendingFriends.removeAll { it.id == friend.id }
 
         database.child("users").child(currentUser!!.id).child("pendingFriends").setValue(currentUser!!.pendingFriends)
-        database.child("users").child(rejectedUser.id).child("pendingFriends").setValue(rejectedUser.pendingFriends)
 
         setupFriendListForDisplay()
     }
@@ -164,30 +187,30 @@ class FriendsPresenter {
             currentUser!!.friendsList!!.add(friend)
         }
 
-        val friendAsUser = User()
-        friendAsUser.id = friend.id
-        friendAsUser.username = friend.username
-        friendAsUser.friendsList = userList.find { it.id == friend.id }!!.friendsList
-        friendAsUser.pendingFriends = userList.find { it.id == friend.id}!!.pendingFriends
+        database.child("users").child(friend.id).runTransaction(object: Transaction.Handler {
 
-        if (friendAsUser.friendsList == null) {
-            friendAsUser.friendsList = ArrayList<Friend>()
-        }
-        if (friendAsUser.pendingFriends != null) {
-            friendAsUser.pendingFriends.removeAll { it.id == currentUser!!.id }
-        }
-        if (friendAsUser.friendsList!!.find { it.id == currentUser!!.id } == null) {
-            val currentUserAsFriend = Friend()
-            currentUserAsFriend.id = currentUser!!.id
-            currentUserAsFriend.username = currentUser!!.username
-            currentUserAsFriend.added = true
-            friendAsUser.friendsList!!.add(currentUserAsFriend)
-        }
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                setupFriendListForDisplay()
+            }
+
+            override fun doTransaction(data: MutableData): Transaction.Result {
+                val friendAsUser = data.getValue(User::class.java)
+                val currentUserAsFriend = Friend()
+                friendAsUser!!.pendingFriends.removeAll { it.id == currentUser!!.id }
+                currentUserAsFriend.id = currentUser!!.id
+                currentUserAsFriend.username = currentUser!!.username
+                currentUserAsFriend.added = true
+                if (friendAsUser.friendsList == null) {
+                    friendAsUser.friendsList = ArrayList<Friend>()
+                }
+                friendAsUser.friendsList.add(currentUserAsFriend)
+                data.value = friendAsUser
+                return Transaction.success(data)
+            }
+        }, true)
 
         database.child("users").child(currentUser!!.id).child("friendsList").setValue(currentUser!!.friendsList)
-        database.child("users").child(friendAsUser.id).child("friendsList").setValue(friendAsUser.friendsList)
         database.child("users").child(currentUser!!.id).child("pendingFriends").setValue(currentUser!!.pendingFriends)
-        database.child("users").child(friendAsUser.id).child("pendingFriends").setValue(friendAsUser.pendingFriends)
 
         setupFriendListForDisplay()
     }
