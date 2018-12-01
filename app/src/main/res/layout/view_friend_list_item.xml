@@ -68,6 +68,7 @@
             android:src="@drawable/ic_message"/>
 
         <ImageButton
+            android:id="@+id/btn_remove_friend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

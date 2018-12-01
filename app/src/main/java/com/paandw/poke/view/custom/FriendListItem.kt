@@ -33,6 +33,7 @@ class FriendListItem(context: Context) : FrameLayout (context) {
         }
 
         btn_add.setOnClickListener { presenter.addFriend(friend) }
+        btn_remove_friend.setOnClickListener { presenter.removeFriend(friend) }
         btn_reject.setOnClickListener { presenter.rejectFriendRequest(friend) }
         tv_name.text = friend.username
     }

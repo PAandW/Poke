@@ -125,6 +125,32 @@ class FriendsPresenter {
         setupFriendListForDisplay()
     }
 
+    fun removeFriend(friend: Friend) {
+        if (currentUser == null) {
+            return
+        }
+        if (currentUser!!.friendsList!!.find { it.id == friend.id } != null) {
+            currentUser!!.friendsList!!.removeAll { it.id == friend.id }
+        }
+
+        database.child("users").child(friend.id).runTransaction(object: Transaction.Handler {
+
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                setupFriendListForDisplay()
+            }
+
+            override fun doTransaction(data: MutableData): Transaction.Result {
+                val friendAsUser = data.getValue(User::class.java)
+                friendAsUser!!.friendsList.removeAll { it.id == currentUser!!.id }
+                data.value = friendAsUser
+                return Transaction.success(data)
+            }
+        }, true)
+
+        database.child("users").child(currentUser!!.id).child("friendsList").setValue(currentUser!!.friendsList)
+        setupFriendListForDisplay()
+    }
+
     fun addFriend(friend: Friend) {
         if (currentUser == null) {
             return

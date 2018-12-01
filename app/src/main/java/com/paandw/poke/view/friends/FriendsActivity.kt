@@ -53,7 +53,7 @@ class FriendsActivity : AppCompatActivity(), IFriendsView {
     }
 
     override fun bindFriendList(friends: MutableList<Friend>?) {
-        if (friends != null && friends.isNotEmpty()) {
+        if (friends != null) {
             friendListAdapter.setDataItems(friends)
         }
     }
