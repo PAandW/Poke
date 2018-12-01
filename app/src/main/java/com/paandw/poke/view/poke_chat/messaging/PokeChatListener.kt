@@ -1,9 +1,9 @@
-package com.paandw.poke.view.chat.p2p
+package com.paandw.poke.view.poke_chat.messaging
 
 import java.io.BufferedReader
 
 
-class P2PChatListener (private val reader: BufferedReader, private val presenter: P2PChatPresenter) : Thread() {
+class PokeChatListener (private val reader: BufferedReader, private val presenter: PokeChatPresenter) : Thread() {
 
     var isListening: Boolean = false
 

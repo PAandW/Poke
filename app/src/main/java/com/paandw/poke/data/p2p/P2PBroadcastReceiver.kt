@@ -5,15 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.net.wifi.p2p.WifiP2pDevice
 import android.net.wifi.p2p.WifiP2pManager
-import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyPresenter
+import com.paandw.poke.view.chat.p2p.lobby.PokeChatLobbyPresenter
 
 class P2PBroadcastReceiver : BroadcastReceiver {
 
     private var manager: WifiP2pManager
     private var channel: WifiP2pManager.Channel
-    private var listener: P2PLobbyPresenter
+    private var listener: PokeChatLobbyPresenter
 
-    constructor(manager: WifiP2pManager, channel: WifiP2pManager.Channel, listener: P2PLobbyPresenter) {
+    constructor(manager: WifiP2pManager, channel: WifiP2pManager.Channel, listener: PokeChatLobbyPresenter) {
         this.manager = manager
         this.channel = channel
         this.listener = listener

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.paandw.poke.view.custom.PeerListItem
 
-internal class P2PLobbyAdapter (private val presenter: P2PLobbyPresenter) : RecyclerView.Adapter<P2PLobbyAdapter.ViewHolder>() {
+internal class PokeChatLobbyAdapter (private val presenter: PokeChatLobbyPresenter) : RecyclerView.Adapter<PokeChatLobbyAdapter.ViewHolder>() {
 
     private val searchItems = ArrayList<WifiP2pDevice>()
 
@@ -17,13 +17,13 @@ internal class P2PLobbyAdapter (private val presenter: P2PLobbyPresenter) : Recy
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): P2PLobbyAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokeChatLobbyAdapter.ViewHolder {
         return ViewHolder(PeerListItem(parent.context))
     }
 
     override fun getItemCount(): Int = searchItems.size
 
-    override fun onBindViewHolder(holder: P2PLobbyAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PokeChatLobbyAdapter.ViewHolder, position: Int) {
         holder.searchItem.setup(searchItems[position], presenter)
     }
 

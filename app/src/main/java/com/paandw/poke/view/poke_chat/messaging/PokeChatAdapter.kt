@@ -1,4 +1,4 @@
-package com.paandw.poke.view.chat.p2p
+package com.paandw.poke.view.poke_chat.messaging
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import com.paandw.poke.data.p2p.P2PMessage
 import com.paandw.poke.view.custom.ConversationItem
 
-internal class P2PMessageAdapter : RecyclerView.Adapter<P2PMessageAdapter.ViewHolder>() {
+internal class PokeChatAdapter : RecyclerView.Adapter<PokeChatAdapter.ViewHolder>() {
 
     private val messages = ArrayList<P2PMessage>()
 

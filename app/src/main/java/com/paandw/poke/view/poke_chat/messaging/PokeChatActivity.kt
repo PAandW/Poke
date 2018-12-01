@@ -1,5 +1,6 @@
-package com.paandw.poke.view.chat.p2p
+package com.paandw.poke.view.poke_chat.messaging
 
+import android.net.wifi.p2p.WifiP2pDevice
 import android.net.wifi.p2p.WifiP2pInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -7,18 +8,22 @@ import android.support.v7.widget.LinearLayoutManager
 import com.paandw.poke.R
 import com.paandw.poke.data.p2p.P2PMessage
 import kotlinx.android.synthetic.main.activity_p2p_chat.*
+import kotlinx.android.synthetic.main.toolbar.*
 
-class P2PChatActivity : AppCompatActivity(), IP2PChatView {
+class PokeChatActivity : AppCompatActivity(), IPokeChatView {
 
-    private lateinit var adapter: P2PMessageAdapter
-    private lateinit var presenter: P2PChatPresenter
+    private lateinit var adapter: PokeChatAdapter
+    private lateinit var presenter: PokeChatPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_p2p_chat)
 
-        presenter = P2PChatPresenter()
-        adapter = P2PMessageAdapter()
+        val connectedDeviceName = intent?.extras?.get("connected_device_name") as String
+
+        toolbar.title = connectedDeviceName
+        presenter = PokeChatPresenter()
+        adapter = PokeChatAdapter()
         rv_messages.layoutManager = LinearLayoutManager(this)
         rv_messages.adapter = adapter
 

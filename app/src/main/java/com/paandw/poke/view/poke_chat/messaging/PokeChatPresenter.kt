@@ -1,4 +1,4 @@
-package com.paandw.poke.view.chat.p2p
+package com.paandw.poke.view.poke_chat.messaging
 
 import android.net.wifi.p2p.WifiP2pInfo
 import com.paandw.poke.data.p2p.P2PClient
@@ -11,16 +11,16 @@ import java.net.ServerSocket
 import java.text.SimpleDateFormat
 import java.util.*
 
-class P2PChatPresenter {
+class PokeChatPresenter {
 
     private lateinit var info: WifiP2pInfo
-    private lateinit var view: IP2PChatView
+    private lateinit var view: IPokeChatView
     private var client: P2PClient? = null
     private var writerToHost: PrintWriter? = null
 
     private val messages = ArrayList<P2PMessage>()
 
-    fun start(info: WifiP2pInfo, view: IP2PChatView) {
+    fun start(info: WifiP2pInfo, view: IPokeChatView) {
         this.info = info
         this.view = view
 

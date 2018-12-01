@@ -27,10 +27,10 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".view.home.HomeActivity" />
         <activity
-            android:name=".view.chat.p2p.P2PChatActivity"
+            android:name=".view.poke_chat.messaging.PokeChatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.chat.p2p.P2PLobbyActivity"
+            android:name=".view.chat.p2p.PokeChatLobbyActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".view.login.LoginActivity"
             android:screenOrientation="portrait">

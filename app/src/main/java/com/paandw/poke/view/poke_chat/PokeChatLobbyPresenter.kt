@@ -3,15 +3,16 @@ package com.paandw.poke.view.chat.p2p.lobby
 import android.net.wifi.p2p.*
 import com.paandw.poke.data.p2p.P2PBroadcastReceiver
 import com.paandw.poke.data.p2p.P2PMessage
-import com.paandw.poke.view.chat.p2p.IP2PLobbyView
+import com.paandw.poke.view.chat.p2p.IPokeChatLobbyView
 
-class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListener, WifiP2pManager.PeerListListener, WifiP2pManager.ConnectionInfoListener {
+class PokeChatLobbyPresenter(var view: IPokeChatLobbyView) : WifiP2pManager.ChannelListener, WifiP2pManager.PeerListListener, WifiP2pManager.ConnectionInfoListener {
 
     private lateinit var device: WifiP2pDevice
     private var manager: WifiP2pManager? = null
     private lateinit var channel: WifiP2pManager.Channel
     private lateinit var broadcastReceiver: P2PBroadcastReceiver
     private var messages = ArrayList<P2PMessage>()
+    private var selectedUser: WifiP2pDevice? = null
 
     private var peerList = ArrayList<WifiP2pDevice>()
 
@@ -39,6 +40,7 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
 
     fun userSelected(device: WifiP2pDevice) {
         val config = WifiP2pConfig()
+        selectedUser = device
         config.deviceAddress = device.deviceAddress
         manager?.connect(channel, config, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
@@ -62,7 +64,11 @@ class P2PLobbyPresenter(var view: IP2PLobbyView) : WifiP2pManager.ChannelListene
 
     override fun onConnectionInfoAvailable(info: WifiP2pInfo) {
         if (info.groupFormed) {
-            view.toChatActivity(info)
+            if (selectedUser != null) {
+                view.toChatActivity(info, selectedUser!!.deviceName)
+            } else {
+                view.toChatActivity(info, info.groupOwnerAddress.hostName)
+            }
         }
     }
 

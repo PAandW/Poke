@@ -1,15 +1,15 @@
 package com.paandw.poke.data.p2p
 
-import com.paandw.poke.view.chat.p2p.P2PChatListener
-import com.paandw.poke.view.chat.p2p.P2PChatPresenter
+import com.paandw.poke.view.poke_chat.messaging.PokeChatListener
+import com.paandw.poke.view.poke_chat.messaging.PokeChatPresenter
 import java.io.BufferedReader
 import java.io.PrintWriter
 
 
 class P2PClient (private val reader: BufferedReader, private val writer: PrintWriter,
-                 private val clientName: String, private val presenter: P2PChatPresenter) {
+                 private val clientName: String, private val presenter: PokeChatPresenter) {
 
-    private var listener: P2PChatListener = P2PChatListener(reader, presenter)
+    private var listener: PokeChatListener = PokeChatListener(reader, presenter)
 
     fun getClientName() : String = clientName
 

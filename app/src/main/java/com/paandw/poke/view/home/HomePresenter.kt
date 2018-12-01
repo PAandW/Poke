@@ -9,6 +9,10 @@ class HomePresenter {
         this.view = view
     }
 
+    fun pokeChatClicked() {
+        view.toPokeChat()
+    }
+
     fun logout() {
         FirebaseAuth.getInstance().signOut()
         view.toLogin()

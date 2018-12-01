@@ -4,7 +4,7 @@ import android.net.wifi.p2p.WifiP2pInfo
 import android.os.AsyncTask
 import com.paandw.poke.data.p2p.P2PClient
 import com.paandw.poke.data.p2p.P2PMessage
-import com.paandw.poke.view.chat.p2p.P2PChatPresenter
+import com.paandw.poke.view.poke_chat.messaging.PokeChatPresenter
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.PrintWriter
@@ -13,7 +13,7 @@ import java.net.ServerSocket
 import java.net.Socket
 
 
-class CreateP2PHost(private val presenter: P2PChatPresenter, private val serverSocket: ServerSocket) : AsyncTask<Void, Void, Void>(){
+class CreateP2PHost(private val presenter: PokeChatPresenter, private val serverSocket: ServerSocket) : AsyncTask<Void, Void, Void>(){
     override fun doInBackground(vararg void: Void?): Void? {
         try {
             val socket = serverSocket.accept()
@@ -32,7 +32,7 @@ class CreateP2PHost(private val presenter: P2PChatPresenter, private val serverS
     }
 }
 
-class ConnectToP2PHost(private val presenter: P2PChatPresenter, private val info: WifiP2pInfo) : AsyncTask<Void, Void, Void>() {
+class ConnectToP2PHost(private val presenter: PokeChatPresenter, private val info: WifiP2pInfo) : AsyncTask<Void, Void, Void>() {
 
     private var reader: BufferedReader? = null
 
@@ -60,7 +60,7 @@ class ConnectToP2PHost(private val presenter: P2PChatPresenter, private val info
     }
 }
 
-class BeginListeningToHost(private val presenter: P2PChatPresenter, private val reader: BufferedReader) : AsyncTask<Void, Void, Void>() {
+class BeginListeningToHost(private val presenter: PokeChatPresenter, private val reader: BufferedReader) : AsyncTask<Void, Void, Void>() {
 
     override fun doInBackground(vararg void: Void?): Void? {
         try {

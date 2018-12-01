@@ -18,18 +18,19 @@ import android.support.v7.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.paandw.poke.R
 import com.paandw.poke.data.p2p.P2PBroadcastReceiver
-import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyAdapter
-import com.paandw.poke.view.chat.p2p.lobby.P2PLobbyPresenter
+import com.paandw.poke.view.chat.p2p.lobby.PokeChatLobbyAdapter
+import com.paandw.poke.view.chat.p2p.lobby.PokeChatLobbyPresenter
+import com.paandw.poke.view.poke_chat.messaging.PokeChatActivity
 import kotlinx.android.synthetic.main.activity_p2p_lobby.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
+class PokeChatLobbyActivity : AppCompatActivity(), IPokeChatLobbyView {
 
-    private var presenter: P2PLobbyPresenter? = null
+    private var presenter: PokeChatLobbyPresenter? = null
 
     private val intentFilter = IntentFilter()
     private var progressDialog: MaterialDialog? = null
-    private lateinit var lobbyAdapter: P2PLobbyAdapter
+    private lateinit var lobbyAdapter: PokeChatLobbyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +61,9 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
 
         val manager = getSystemService(Context.WIFI_P2P_SERVICE)?.let { it as WifiP2pManager }
         val channel = manager?.initialize(this, mainLooper, null)
-        presenter = P2PLobbyPresenter(this)
+        presenter = PokeChatLobbyPresenter(this)
 
-        lobbyAdapter = P2PLobbyAdapter(presenter!!)
+        lobbyAdapter = PokeChatLobbyAdapter(presenter!!)
         rv_users.layoutManager = LinearLayoutManager(this)
         rv_users.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         rv_users.adapter = lobbyAdapter
@@ -94,9 +95,10 @@ class P2PLobbyActivity : AppCompatActivity(), IP2PLobbyView {
         lobbyAdapter.setListItems(peers)
     }
 
-    override fun toChatActivity(info: WifiP2pInfo) {
-        val intent = Intent(this, P2PChatActivity::class.java)
+    override fun toChatActivity(info: WifiP2pInfo, connectedDeviceName: String) {
+        val intent = Intent(this, PokeChatActivity::class.java)
         intent.putExtra("info", info)
+        intent.putExtra("connected_device_name", connectedDeviceName)
         startActivityForResult(intent, 101)
     }
 

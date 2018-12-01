@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.paandw.poke.R
+import com.paandw.poke.view.chat.p2p.PokeChatLobbyActivity
 import com.paandw.poke.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -21,7 +22,7 @@ class HomeActivity : AppCompatActivity(), IHomeView {
         toolbar.title = getString(R.string.app_name)
 
         btn_poke_chat.setOnClickListener {
-            //Todo to poke chat
+            presenter.pokeChatClicked()
         }
 
         btn_friends.setOnClickListener {
@@ -38,7 +39,7 @@ class HomeActivity : AppCompatActivity(), IHomeView {
     }
 
     override fun toPokeChat() {
-        //TODO poke chat
+       startActivity(Intent(this, PokeChatLobbyActivity::class.java))
     }
 
     override fun toFriendsList() {
