@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Poke</string>
+    <string name="firebase_web_client_id">303757538535-k8o9ip1s5gdrf6jn15eja6u8jnmprfpc.apps.googleusercontent.com</string>
+    <string name="firebase_android_client_id">303757538535-75h05dnnm38cq049h0e2a3k247bits26.apps.googleusercontent.com</string>
 </resources>
