@@ -47,7 +47,7 @@ class FriendsActivity : AppCompatActivity(), IFriendsView {
             }
         })
 
-        btn_add_friend.setOnClickListener { presenter.addFriend() }
+        btn_add_friend.setOnClickListener { presenter.sendFriendRequest() }
 
         presenter.start(this)
     }

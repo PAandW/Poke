@@ -17,6 +17,23 @@ class FriendListItem(context: Context) : FrameLayout (context) {
     }
 
     fun setup(friend: Friend, presenter: FriendsPresenter) {
+        if (!friend.sent && !friend.added) {
+            container_pending_request.visibility = View.VISIBLE
+            container_friend_options.visibility = View.GONE
+            tv_pending.visibility = View.GONE
+        } else if (friend.sent && !friend.added) {
+            container_pending_request.visibility = View.INVISIBLE
+            container_friend_options.visibility = View.GONE
+            tv_pending.visibility = View.VISIBLE
+        }
+        else {
+            container_friend_options.visibility = View.VISIBLE
+            container_pending_request.visibility = View.INVISIBLE
+            tv_pending.visibility = View.GONE
+        }
+
+        btn_add.setOnClickListener { presenter.addFriend(friend) }
+        btn_reject.setOnClickListener { presenter.rejectFriendRequest(friend) }
         tv_name.text = friend.username
     }
 

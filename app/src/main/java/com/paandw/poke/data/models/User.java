@@ -6,4 +6,5 @@ public class User {
     public String id;
     public String username;
     public ArrayList<Friend> friendsList;
+    public ArrayList<Friend> pendingFriends;
 }
