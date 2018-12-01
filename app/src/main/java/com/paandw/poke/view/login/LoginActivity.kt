@@ -56,6 +56,10 @@ class LoginActivity : AppCompatActivity(), ILoginView {
         googleSignInClient = GoogleSignIn.getClient(this, options)
     }
 
+    override fun nukeSignIn() {
+        googleSignInClient.signOut()
+    }
+
     override fun toHomeScreen() {
         startActivity(Intent(this, HomeActivity::class.java))
         finish()

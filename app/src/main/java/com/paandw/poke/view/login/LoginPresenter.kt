@@ -27,6 +27,8 @@ class LoginPresenter {
 
         if (firebaseAuth.currentUser != null) {
             view.toHomeScreen()
+        } else {
+            view.nukeSignIn()
         }
     }
 

@@ -4,6 +4,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 interface ILoginView {
     fun bindGoogleClient(options: GoogleSignInOptions)
+    fun nukeSignIn()
     fun toHomeScreen()
     fun initiateGoogleSignIn()
     fun showAuthError(errorMsg: String)
