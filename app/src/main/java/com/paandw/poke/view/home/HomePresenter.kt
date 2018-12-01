@@ -3,6 +3,7 @@ package com.paandw.poke.view.home
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.paandw.poke.data.models.Friend
 import com.paandw.poke.data.models.User
 
 class HomePresenter {
@@ -17,7 +18,9 @@ class HomePresenter {
         val user = User()
         user.id = firebaseUser?.uid
         user.username = firebaseUser?.displayName
-        database.child("users").child(user.id).setValue(user)
+        if (database.child("users").child(user.id).key == null) {
+            database.child("users").child(user.id).setValue(user)
+        }
     }
 
     fun pokeChatClicked() {
