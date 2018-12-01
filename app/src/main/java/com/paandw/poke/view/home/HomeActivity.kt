@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.paandw.poke.R
 import com.paandw.poke.view.chat.p2p.PokeChatLobbyActivity
+import com.paandw.poke.view.friends.FriendsActivity
 import com.paandw.poke.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -26,7 +27,7 @@ class HomeActivity : AppCompatActivity(), IHomeView {
         }
 
         btn_friends.setOnClickListener {
-            //Todo to friends list
+            presenter.friendsListClicked()
         }
 
         btn_group_chats.setOnClickListener {
@@ -43,7 +44,7 @@ class HomeActivity : AppCompatActivity(), IHomeView {
     }
 
     override fun toFriendsList() {
-        //TODO friends list
+        startActivity(Intent(this, FriendsActivity::class.java))
     }
 
     override fun toGroupChat() {
