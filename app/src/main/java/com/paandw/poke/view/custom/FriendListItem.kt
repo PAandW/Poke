@@ -35,7 +35,7 @@ class FriendListItem(context: Context) : FrameLayout (context) {
         btn_add.setOnClickListener { presenter.addFriend(friend) }
         btn_remove_friend.setOnClickListener { presenter.removeFriend(friend) }
         btn_reject.setOnClickListener { presenter.rejectFriendRequest(friend) }
-        btn_message.setOnClickListener { presenter.startPrivateMessaging(friend.privateMessageId, friend.username) }
+        btn_message.setOnClickListener { presenter.startPrivateMessaging(friend.privateMessageId, friend) }
         tv_name.text = friend.username
     }
 

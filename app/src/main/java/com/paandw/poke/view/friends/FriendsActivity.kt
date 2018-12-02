@@ -67,10 +67,11 @@ class FriendsActivity : AppCompatActivity(), IFriendsView {
         et_add_friend.setOnItemClickListener { parent, view, position, id -> presenter.selectFriendFromSearch(position) }
     }
 
-    override fun toPrivateMessaging(privateMessageId: String, recipientName: String) {
+    override fun toPrivateMessaging(privateMessageId: String, friend: Friend) {
         val intent = Intent(this, MessagingActivity::class.java)
         intent.putExtra("chat_id", privateMessageId)
-        intent.putExtra("recipient_name", recipientName)
+        intent.putExtra("recipient_name", friend.username)
+        intent.putExtra("recipient_id", friend.id)
         startActivity(intent)
     }
 }

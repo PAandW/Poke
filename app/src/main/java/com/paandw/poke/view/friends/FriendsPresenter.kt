@@ -219,8 +219,8 @@ class FriendsPresenter {
         setupFriendListForDisplay()
     }
 
-    fun startPrivateMessaging(privateMessageId: String, recipientName: String) {
-        view.toPrivateMessaging(privateMessageId, recipientName)
+    fun startPrivateMessaging(privateMessageId: String, friend: Friend) {
+        view.toPrivateMessaging(privateMessageId, friend)
     }
 
 }

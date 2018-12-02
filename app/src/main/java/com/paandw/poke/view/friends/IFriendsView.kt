@@ -6,5 +6,5 @@ import com.paandw.poke.data.models.User
 interface IFriendsView {
     fun bindUserSearchItems(users: ArrayList<String>)
     fun bindFriendList(friends: MutableList<Friend>?)
-    fun toPrivateMessaging(privateMessageId: String, recipientName: String)
+    fun toPrivateMessaging(privateMessageId: String, friend: Friend)
 }
