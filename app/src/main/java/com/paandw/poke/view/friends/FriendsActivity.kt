@@ -1,5 +1,6 @@
 package com.paandw.poke.view.friends
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -11,6 +12,7 @@ import android.widget.PopupMenu
 import com.paandw.poke.R
 import com.paandw.poke.data.models.Friend
 import com.paandw.poke.data.models.User
+import com.paandw.poke.view.messaging.MessagingActivity
 import kotlinx.android.synthetic.main.activity_friends.*
 
 class FriendsActivity : AppCompatActivity(), IFriendsView {
@@ -63,5 +65,12 @@ class FriendsActivity : AppCompatActivity(), IFriendsView {
         searchAdapter.addAll(users)
         searchAdapter.notifyDataSetChanged()
         et_add_friend.setOnItemClickListener { parent, view, position, id -> presenter.selectFriendFromSearch(position) }
+    }
+
+    override fun toPrivateMessaging(privateMessageId: String, recipientName: String) {
+        val intent = Intent(this, MessagingActivity::class.java)
+        intent.putExtra("chat_id", privateMessageId)
+        intent.putExtra("recipient_name", recipientName)
+        startActivity(intent)
     }
 }

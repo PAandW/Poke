@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.paandw.poke.data.models.Friend
 import com.paandw.poke.data.models.User
+import java.util.*
 
 class FriendsPresenter {
 
@@ -178,11 +179,13 @@ class FriendsPresenter {
         if (currentUser == null) {
             return
         }
+        val privateMessageId = UUID.randomUUID().toString()
         if (currentUser!!.friendsList == null) {
             currentUser!!.friendsList = ArrayList<Friend>()
         }
         if (currentUser!!.friendsList!!.find { it.id == friend.id } == null) {
             friend.added = true
+            friend.privateMessageId = privateMessageId
             currentUser!!.pendingFriends.removeAll { it.id == friend.id }
             currentUser!!.friendsList!!.add(friend)
         }
@@ -200,6 +203,7 @@ class FriendsPresenter {
                 currentUserAsFriend.id = currentUser!!.id
                 currentUserAsFriend.username = currentUser!!.username
                 currentUserAsFriend.added = true
+                currentUserAsFriend.privateMessageId = privateMessageId
                 if (friendAsUser.friendsList == null) {
                     friendAsUser.friendsList = ArrayList<Friend>()
                 }
@@ -213,6 +217,10 @@ class FriendsPresenter {
         database.child("users").child(currentUser!!.id).child("pendingFriends").setValue(currentUser!!.pendingFriends)
 
         setupFriendListForDisplay()
+    }
+
+    fun startPrivateMessaging(privateMessageId: String, recipientName: String) {
+        view.toPrivateMessaging(privateMessageId, recipientName)
     }
 
 }

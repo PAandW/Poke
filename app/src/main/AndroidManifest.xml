@@ -41,7 +41,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.friends.FriendsActivity"></activity>
+        <activity android:name=".view.friends.FriendsActivity" />
+        <activity android:name=".view.messaging.MessagingActivity"></activity>
     </application>
 
 </manifest>
