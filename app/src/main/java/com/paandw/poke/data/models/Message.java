@@ -3,6 +3,7 @@ package com.paandw.poke.data.models;
 public class Message {
 
     public String chatId;
+    public String senderName;
     public String senderId;
     public String sendTime;
     public String content;

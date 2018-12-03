@@ -32,6 +32,10 @@ class GroupChatListPresenter {
         database.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).addValueEventListener(userListener)
     }
 
+    fun chatSelected(conversation: Conversation) {
+        view.toGroupChat(conversation)
+    }
+
     private fun setupGroupChatListener() {
         val groupsListener = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) { }

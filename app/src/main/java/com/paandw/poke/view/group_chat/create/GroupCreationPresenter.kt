@@ -8,6 +8,7 @@ import com.paandw.poke.data.models.Message
 import com.paandw.poke.data.models.User
 import org.w3c.dom.Text
 import java.util.*
+import kotlin.collections.ArrayList
 
 class GroupCreationPresenter {
 
@@ -56,16 +57,21 @@ class GroupCreationPresenter {
 
         val conversation = Conversation()
         conversation.groupName = groupName
-        conversation.userIds = addedFriendIds
-        val conversationId = UUID.randomUUID().toString()
+        conversation.userIds = ArrayList<String>()
+        conversation.userIds.addAll(addedFriendIds)
+        conversation.userIds.add(currentUser!!.id)
+        conversation.chatId = UUID.randomUUID().toString()
 
-        database.child("conversations").child(conversationId).runTransaction(object : Transaction.Handler {
+        database.child("conversations").child(conversation.chatId).runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
-
+                view.toGroupChat(conversation.chatId, groupName)
             }
 
             override fun doTransaction(data: MutableData): Transaction.Result {
-                val check = data.getValue(Conversation::class.java) ?: return Transaction.success(data)
+                val check = data.getValue(Conversation::class.java)
+                if (check != null) {
+                    return Transaction.success(data)
+                }
                 data.value = conversation
                 return Transaction.success(data)
             }

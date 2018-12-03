@@ -11,12 +11,19 @@ import kotlinx.android.synthetic.main.view_group_chat_list_item.view.*
 
 class GroupChatListItem(context: Context) : FrameLayout(context) {
 
+    private var presenter: GroupChatListPresenter? = null
+    private lateinit var conversation: Conversation
+
     init {
         layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         View.inflate(context, R.layout.view_group_chat_list_item, this)
+
+        setOnClickListener { presenter?.chatSelected(conversation) }
     }
 
     fun setup(conversation: Conversation, presenter: GroupChatListPresenter) {
+        this.presenter = presenter
+        this.conversation = conversation
         tv_group_chat_name.text = conversation.groupName
     }
 
