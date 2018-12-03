@@ -47,7 +47,7 @@ class HomeActivity : AppCompatActivity(), IHomeView {
         startActivity(Intent(this, FriendsActivity::class.java))
     }
 
-    override fun toGroupChat() {
+    override fun toGroupChats() {
         //TODO group chats
     }
 

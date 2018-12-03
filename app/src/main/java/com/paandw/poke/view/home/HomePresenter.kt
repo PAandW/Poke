@@ -25,6 +25,10 @@ class HomePresenter {
         view.toFriendsList()
     }
 
+    fun chatsClicked() {
+        view.toGroupChats()
+    }
+
     fun logout() {
         FirebaseAuth.getInstance().signOut()
         view.toLogin()

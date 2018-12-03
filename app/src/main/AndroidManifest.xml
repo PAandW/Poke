@@ -42,7 +42,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.friends.FriendsActivity" />
-        <activity android:name=".view.messaging.MessagingActivity"></activity>
+        <activity android:name=".view.messaging.MessagingActivity" />
+        <activity android:name=".view.group_chat.GroupChatListActivity" />
+        <activity android:name=".view.group_chat.create.GroupCreationActivity"></activity>
     </application>
 
 </manifest>
