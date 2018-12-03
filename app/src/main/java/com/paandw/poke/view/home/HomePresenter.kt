@@ -15,12 +15,6 @@ class HomePresenter {
         this.view = view
         database = FirebaseDatabase.getInstance().reference
         val firebaseUser = FirebaseAuth.getInstance().currentUser
-        val user = User()
-        user.id = firebaseUser?.uid
-        user.username = firebaseUser?.displayName
-        if (database.child("users").child(user.id).key == null) {
-            database.child("users").child(user.id).setValue(user)
-        }
     }
 
     fun pokeChatClicked() {
