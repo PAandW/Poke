@@ -40,6 +40,9 @@ class GroupChatListPresenter {
                 groupChatList.clear()
                 for (group in data.children) {
                     val conversation = group.getValue(Conversation::class.java) ?: continue
+                    if (conversation.groupName == "private_message_placeholder") {
+                        continue
+                    }
                     if (conversation.userIds.any { it == currentUser!!.id }) {
                         groupChatList.add(conversation)
                     }

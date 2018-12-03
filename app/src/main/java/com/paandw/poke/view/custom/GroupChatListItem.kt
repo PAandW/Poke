@@ -13,7 +13,7 @@ class GroupChatListItem(context: Context) : FrameLayout(context) {
 
     init {
         layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        View.inflate(context, R.layout.view_friend_list_item, this)
+        View.inflate(context, R.layout.view_group_chat_list_item, this)
     }
 
     fun setup(conversation: Conversation, presenter: GroupChatListPresenter) {

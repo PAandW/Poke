@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.paandw.poke.R
 import com.paandw.poke.view.chat.p2p.PokeChatLobbyActivity
 import com.paandw.poke.view.friends.FriendsActivity
+import com.paandw.poke.view.group_chat.GroupChatListActivity
 import com.paandw.poke.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -31,7 +32,7 @@ class HomeActivity : AppCompatActivity(), IHomeView {
         }
 
         btn_group_chats.setOnClickListener {
-            //Todo to group chat list
+            presenter.chatsClicked()
         }
 
         btn_logout.setOnClickListener {
@@ -48,7 +49,7 @@ class HomeActivity : AppCompatActivity(), IHomeView {
     }
 
     override fun toGroupChats() {
-        //TODO group chats
+        startActivity(Intent(this, GroupChatListActivity::class.java))
     }
 
     override fun toLogin() {
