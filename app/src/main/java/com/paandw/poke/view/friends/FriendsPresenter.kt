@@ -70,8 +70,15 @@ class FriendsPresenter {
         val users = ArrayList<String>()
         for (user in userList) {
             if (user.username.contains(searchTerm)) {
-                if (currentUser!!.friendsList.any { it.id == user.id } || currentUser!!.pendingFriends.any {it.id == user.id}) {
-                    continue
+                if (currentUser!!.friendsList != null) {
+                    if (currentUser!!.friendsList.any { it.id == user.id }) {
+                        continue
+                    }
+                }
+                if (currentUser!!.pendingFriends != null) {
+                    if (currentUser!!.pendingFriends.any { it.id == user.id }) {
+                        continue
+                    }
                 }
                 searchMatchList.add(user)
                 users.add(user.username)
