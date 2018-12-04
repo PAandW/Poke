@@ -13,7 +13,7 @@
         tools:text="Billy Skeeta"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@+id/container_message_received"
-        app:layout_constraintEnd_toEndOf="@+id/container_message_received"/>
+        app:layout_constraintEnd_toStartOf="@+id/guideline_received"/>
 
     <FrameLayout
         android:id="@+id/container_message_received"
@@ -50,7 +50,7 @@
         android:text="You"
         android:textAlignment="textEnd"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/container_message_sent"
+        app:layout_constraintStart_toEndOf="@+id/guideline_sent"
         app:layout_constraintEnd_toEndOf="@+id/container_message_sent"/>
 
     <FrameLayout

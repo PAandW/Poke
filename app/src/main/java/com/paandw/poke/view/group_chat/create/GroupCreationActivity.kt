@@ -18,6 +18,7 @@ class GroupCreationActivity : AppCompatActivity(), IGroupCreation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_creation)
+        toolbar.title = "Create Group"
         presenter = GroupCreationPresenter()
         adapter = GroupCreationAdapter(presenter)
 
