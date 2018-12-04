@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
+import android.widget.Toast
 import com.paandw.poke.R
 import com.paandw.poke.data.models.Friend
 import com.paandw.poke.data.models.User
@@ -51,6 +52,8 @@ class FriendsActivity : AppCompatActivity(), IFriendsView {
 
         btn_add_friend.setOnClickListener { presenter.sendFriendRequest() }
 
+        btn_poke_a_stranger.setOnClickListener { presenter.pokeAStranger() }
+
         presenter.start(this)
     }
 
@@ -73,5 +76,9 @@ class FriendsActivity : AppCompatActivity(), IFriendsView {
         intent.putExtra("recipient_name", friend.username)
         intent.putExtra("recipient_id", friend.id)
         startActivity(intent)
+    }
+
+    override fun showPokeConfirmation(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 }

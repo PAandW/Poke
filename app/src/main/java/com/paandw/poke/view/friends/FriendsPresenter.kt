@@ -2,9 +2,12 @@ package com.paandw.poke.view.friends
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.paandw.poke.data.models.Conversation
 import com.paandw.poke.data.models.Friend
+import com.paandw.poke.data.models.Message
 import com.paandw.poke.data.models.User
 import java.util.*
+import kotlin.collections.ArrayList
 
 class FriendsPresenter {
 
@@ -89,6 +92,74 @@ class FriendsPresenter {
         friendToAddAsUser!!.friendsList = tempMatchList[position].friendsList
     }
 
+    fun pokeAStranger() {
+        val unaddedUsers = ArrayList<User>()
+
+        for (user in userList) {
+            if (currentUser!!.friendsList != null) {
+                if (currentUser!!.friendsList.any { it.id == user.id }) {
+                    continue
+                }
+            }
+            if (currentUser!!.pendingFriends != null) {
+                if (currentUser!!.pendingFriends.any { it.id == user.id }) {
+                    continue
+                }
+            }
+
+            unaddedUsers.add(user)
+        }
+
+        if (unaddedUsers.size == 0) {
+            return
+        }
+
+        val randomIndex = Random().nextInt(unaddedUsers.size)
+
+        friendToAdd = Friend()
+        friendToAdd!!.id = unaddedUsers[randomIndex].id
+        friendToAdd!!.username = unaddedUsers[randomIndex].username
+        friendToAdd!!.sent = true
+        friendToAddAsUser = User()
+        friendToAddAsUser!!.id = unaddedUsers[randomIndex].id
+        friendToAddAsUser!!.username = unaddedUsers[randomIndex].username
+        friendToAddAsUser!!.friendsList = unaddedUsers[randomIndex].friendsList
+
+        sendFriendRequest()
+    }
+
+    fun pokeFriend(friend: Friend) {
+
+        val chatId = currentUser!!.friendsList.first { it.id == friend.id }.privateMessageId
+
+        database.child("conversations").child(chatId).runTransaction(object : Transaction.Handler {
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                sendPokeMessage(friend, chatId)
+            }
+
+            override fun doTransaction(data: MutableData): Transaction.Result {
+                var conversation = data.getValue(Conversation::class.java)
+                if (conversation != null) {
+                    return Transaction.success(data)
+                } else {
+                    conversation = Conversation()
+                    conversation.groupName = "private_message_placeholder"
+                    conversation.userIds = ArrayList<String>()
+                    conversation.userIds.add(currentUser!!.id)
+                    conversation.userIds.add(friend.id)
+                    conversation.messages = ArrayList<Message>()
+                    val messageSlug = Message()
+                    messageSlug.content = "private_message_init_slug"
+                    conversation.messages.add(messageSlug)
+
+                    data.value = conversation
+
+                    return Transaction.success(data)
+                }
+            }
+        })
+    }
+
     fun sendFriendRequest() {
         if (friendToAdd == null || currentUser == null) {
             return
@@ -103,6 +174,8 @@ class FriendsPresenter {
         database.child("users").child(friendToAdd!!.id).runTransaction(object: Transaction.Handler {
 
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                friendToAdd = null
+                friendToAddAsUser = null
                 setupFriendListForDisplay()
             }
 
@@ -224,6 +297,26 @@ class FriendsPresenter {
 
     fun startPrivateMessaging(privateMessageId: String, friend: Friend) {
         view.toPrivateMessaging(privateMessageId, friend)
+    }
+
+    private fun sendPokeMessage(friend: Friend, chatId: String) {
+        database.child("conversations").child(chatId).runTransaction(object: Transaction.Handler {
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                view.showPokeConfirmation("You poked ${friend.username}!")
+            }
+
+            override fun doTransaction(data: MutableData): Transaction.Result {
+                val conversation = data.getValue(Conversation::class.java)
+                val message = Message()
+                message.chatId = chatId
+                message.senderId = currentUser!!.id
+                message.content = "poke"
+                message.sendTime = Date().toString()
+                conversation!!.messages.add(message)
+                data.value = conversation
+                return Transaction.success(data)
+            }
+        }, true)
     }
 
 }

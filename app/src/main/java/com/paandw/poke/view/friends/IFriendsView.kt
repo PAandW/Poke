@@ -7,4 +7,5 @@ interface IFriendsView {
     fun bindUserSearchItems(users: ArrayList<String>)
     fun bindFriendList(friends: MutableList<Friend>?)
     fun toPrivateMessaging(privateMessageId: String, friend: Friend)
+    fun showPokeConfirmation(msg: String)
 }
