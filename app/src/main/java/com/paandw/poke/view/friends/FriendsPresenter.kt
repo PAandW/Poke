@@ -64,12 +64,13 @@ class FriendsPresenter {
     }
 
     fun initiateSearch(searchTerm: String) {
+        tempMatchList.clear()
         tempMatchList.addAll(searchMatchList)
         searchMatchList.clear()
         friendToAdd = null
         val users = ArrayList<String>()
         for (user in userList) {
-            if (user.username.contains(searchTerm)) {
+            if (user.username.contains(searchTerm, ignoreCase = true)) {
                 if (currentUser!!.friendsList != null) {
                     if (currentUser!!.friendsList.any { it.id == user.id }) {
                         continue
